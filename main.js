@@ -32,6 +32,82 @@ if (cursor && cursorText) {
   });
 }
 
+// ── PRELOADER & BACKGROUND ASSET LOADING LOGIC (Only runs once per session) ──
+const preloader = document.getElementById('preloader');
+const preloaderCounter = document.getElementById('preloader-counter');
+
+if (preloader && preloaderCounter) {
+  const hasLoadedBefore = sessionStorage.getItem('portfolioLoaded');
+
+  if (hasLoadedBefore === 'true') {
+    // Already visited in this session -> skip preloader instantly
+    preloader.style.display = 'none';
+    if (preloader.parentNode) preloader.remove();
+  } else {
+    // First time entering website in this session -> play preloader
+    const images = Array.from(document.querySelectorAll('img'));
+    const totalAssets = Math.max(images.length + 1, 1);
+    let loadedAssets = 0;
+    let currentPercentage = 0;
+    let targetPercentage = 0;
+
+    function updateProgress(percent) {
+      targetPercentage = Math.min(100, Math.max(targetPercentage, percent));
+    }
+
+    // Smooth progress counter tick
+    const progressInterval = setInterval(() => {
+      if (currentPercentage < targetPercentage) {
+        currentPercentage += Math.ceil((targetPercentage - currentPercentage) * 0.25);
+        if (currentPercentage > targetPercentage) currentPercentage = targetPercentage;
+        
+        preloaderCounter.textContent = `${currentPercentage}%`;
+      }
+
+      if (currentPercentage >= 100) {
+        clearInterval(progressInterval);
+        sessionStorage.setItem('portfolioLoaded', 'true');
+        setTimeout(() => {
+          preloader.classList.add('preloader-hidden');
+          setTimeout(() => {
+            if (preloader.parentNode) preloader.remove();
+          }, 900);
+        }, 300);
+      }
+    }, 25);
+
+    function assetLoaded() {
+      loadedAssets++;
+      const pct = Math.round((loadedAssets / totalAssets) * 100);
+      updateProgress(pct);
+    }
+
+    if (document.fonts) {
+      document.fonts.ready.then(assetLoaded).catch(assetLoaded);
+    } else {
+      assetLoaded();
+    }
+
+    if (images.length > 0) {
+      images.forEach(img => {
+        if (img.complete && img.naturalHeight !== 0) {
+          assetLoaded();
+        } else {
+          img.addEventListener('load', assetLoaded, { once: true });
+          img.addEventListener('error', assetLoaded, { once: true });
+        }
+      });
+    } else {
+      updateProgress(100);
+    }
+
+    // Guaranteed fallback: complete preloader within 2.8s
+    setTimeout(() => {
+      updateProgress(100);
+    }, 2800);
+  }
+}
+
 // ── DOM References ──
 const scrollWrapper = document.getElementById('scroll-wrapper');
 const panels = gsap.utils.toArray('.panel');

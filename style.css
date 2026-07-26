@@ -115,6 +115,100 @@ button {
   opacity: 1;
 }
 
+/* ── Preloader (Loading Screen) ── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  user-select: none;
+}
+
+.preloader.preloader-hidden {
+  opacity: 0;
+  filter: blur(24px);
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2vh, 1.8rem);
+  text-align: center;
+}
+
+.preloader-title {
+  font-family: var(--font-main);
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
+  font-weight: 400;
+  color: var(--color-heading);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.preloader-subtitle {
+  font-family: var(--font-main);
+  font-size: clamp(0.75rem, 1.1vw, 1.05rem);
+  color: var(--color-heading);
+  letter-spacing: 0.32em;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.preloader-progress-wrapper {
+  width: clamp(180px, 30vw, 320px);
+  height: 3px;
+  background-color: rgba(253, 240, 213, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.preloader-progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #00F5D4;
+  transition: width 0.15s ease-out;
+  border-radius: 4px;
+}
+
+.preloader-counter {
+  font-family: var(--font-main);
+  font-size: clamp(4.5rem, 24vw, 380px);
+  font-weight: 400;
+  color: var(--color-heading);
+  text-align: center;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  will-change: transform, opacity, filter;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preloader.preloader-hidden .preloader-counter {
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateY(-35px);
+}
+
 /* ── Texture Overlay ── */
 @keyframes texture-drift {
   0% {
