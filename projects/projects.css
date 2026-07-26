@@ -1,0 +1,217 @@
+/* ==========================================================================
+   PROJECT PAGES STYLESHEET
+   ========================================================================== */
+
+/* ── Font Face ── */
+@font-face {
+  font-family: 'Cal Sans';
+  src: url('/assets/CalSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Enable native, universal vertical scrolling with hidden scrollbars */
+html,
+body.project-page {
+  width: 100%;
+  min-height: 100vh;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background-color: var(--color-bg);
+  font-family: var(--font-main);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+  scrollbar-width: none !important; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none !important; /* Hide scrollbar IE/Edge */
+}
+
+/* Hide scrollbar on Rightside for Chrome / Safari / Edge */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+body.project-page::-webkit-scrollbar,
+.project-panel-inner::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Panel Inner Container */
+.project-panel-inner {
+  width: 100%;
+  min-height: 100vh;
+  padding: var(--panel-padding) !important;
+  padding-top: clamp(0.5rem, 1.5vh, 1rem) !important;
+  padding-bottom: clamp(4rem, 8vh, 6rem) !important;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Header Section - EXACT match to hero page padding & left-alignment */
+.project-header {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: clamp(1.5rem, 4vh, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vh, 1rem);
+}
+
+.project-page-title {
+  font-family: var(--font-main);
+  font-size: var(--size-panel-title);
+  color: var(--color-heading);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.project-subtitle {
+  font-family: var(--font-main);
+  font-size: var(--size-project-desc);
+  color: var(--color-text);
+  letter-spacing: var(--spacing-body);
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  line-height: 1.4;
+  max-width: 220ch;
+  
+}
+.project-details{
+  max-width: 220ch;
+  margin-left: 28px;
+} 
+
+.project-subtitle .arrow {
+  display: inline-block;
+  margin-right: 0.4em;
+}
+
+/* Gallery Container - EXACT match to hero page width & alignment */
+.project-gallery-container {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* 1-2-1 Masonry Layout (Invento & Personal Works) */
+.layout-1-2-1 {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.layout-row-1 {
+  width: 100%;
+}
+
+.layout-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* Work images styling */
+.layout-1-2-1 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.layout-grid-3x3 img {
+  width: 100%;
+  aspect-ratio: 1405.16 / 1750;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.layout-1-2-1 img:hover,
+.layout-grid-3x3 img:hover {
+  transform: scale(1.01);
+  filter: brightness(1.03);
+}
+
+/* 3x3 Grid Layout (Seedex) */
+.layout-grid-3x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.shall-we-work-subtext{
+  margin-left: 28px;
+}
+
+.shall-we-work-email{
+  margin-left: 28px;
+}
+
+/* Bottom Panel Navigation - fixed floating bar matching Graphic Design page setting */
+.panel-bottom-nav {
+  position: fixed;
+  bottom: clamp(1rem, 2.5vh, 2.5rem);
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  padding: 0.5rem 0;
+  z-index: 100;
+  pointer-events: auto;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-bottom-nav.nav-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+.bottom-nav-link {
+  font-family: var(--font-main);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  color: var(--color-heading);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.bottom-nav-link:hover {
+  opacity: 0.7;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout-row-2,
+  .layout-grid-3x3 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .layout-1-2-1 {
+    gap: 1.5rem;
+  }
+}
