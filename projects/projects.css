@@ -215,3 +215,20 @@ body.project-page::-webkit-scrollbar,
     gap: 1.5rem;
   }
 }
+
+/* Disable custom cursor on mobile versions & touch devices */
+@media (max-width: 768px), (pointer: coarse), (hover: none) {
+  .custom-cursor {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  body, *, html {
+    cursor: auto !important;
+  }
+
+  a, button, [data-cursor-text], .project-card, .lightbox-close, .shall-we-work-link, .nav-item, .project-link, .contact-email, .bottom-nav-link {
+    cursor: pointer !important;
+  }
+}

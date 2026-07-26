@@ -26,8 +26,8 @@
   --size-hero-title: clamp(4.5rem, 24vw, 380px);
   --size-panel-title: calc(var(--size-hero-title) / 1.618034);
   --size-section-heading: calc(var(--size-panel-title) / 1.618034);
-  --size-body-link: calc(var(--size-section-heading) / (1.618034 * 4));
-  --size-project-desc: calc(var(--size-body-link) / 1.618034);
+  --size-body-link: clamp(1.2rem, 2.2vw, 1.8rem);
+  --size-project-desc: clamp(0.95rem, 1.5vw, 1.25rem);
   --spacing-body: 0.43em;
 
   /* Layout */
@@ -151,7 +151,7 @@ button {
 
 .preloader-title {
   font-family: var(--font-main);
-  font-size: clamp(2.2rem, 5.5vw, 5rem);
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
   font-weight: 400;
   color: var(--color-heading);
   letter-spacing: 0.28em;
@@ -1276,5 +1276,22 @@ button {
 @media (max-width: 480px) {
   :root {
     --panel-padding: 1rem;
+  }
+}
+
+/* Disable custom cursor on mobile versions & touch devices */
+@media (max-width: 768px), (pointer: coarse), (hover: none) {
+  .custom-cursor {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  body, *, html {
+    cursor: auto !important;
+  }
+
+  a, button, [data-cursor-text], .project-card, .lightbox-close, .shall-we-work-link, .nav-item, .project-link, .contact-email {
+    cursor: pointer !important;
   }
 }

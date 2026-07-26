@@ -10,7 +10,20 @@ const cursor = document.querySelector('.custom-cursor');
 const cursorText = document.querySelector('.cursor-text');
 
 if (cursor && cursorText) {
+  const isMobileOrTouch = () => window.matchMedia('(pointer: coarse), (hover: none), (max-width: 768px)').matches;
+
+  const updateCursorVisibility = () => {
+    if (isMobileOrTouch()) {
+      cursor.style.display = 'none';
+    } else {
+      cursor.style.display = 'flex';
+    }
+  };
+  updateCursorVisibility();
+  window.addEventListener('resize', updateCursorVisibility);
+
   window.addEventListener('mousemove', (e) => {
+    if (isMobileOrTouch() || cursor.style.display === 'none') return;
     // offset by half the dot width (12px / 2 = 6px) to center it
     cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
   });
@@ -20,12 +33,14 @@ if (cursor && cursorText) {
 
   hoverElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
+      if (isMobileOrTouch() || cursor.style.display === 'none') return;
       const text = el.getAttribute('data-cursor-text');
       cursorText.textContent = text;
       cursor.classList.add('has-text');
     });
 
     el.addEventListener('mouseleave', () => {
+      if (isMobileOrTouch() || cursor.style.display === 'none') return;
       cursor.classList.remove('has-text');
       cursorText.textContent = '';
     });
@@ -260,19 +275,38 @@ function splitTextForBlurInUp(el, mode = 'character') {
   el.innerHTML = ''; // clear original text node
 
   if (mode === 'character') {
-    const chars = text.split('');
+    // Split by whitespace first to preserve word boundaries and prevent words from cutting across lines
+    const words = text.split(/(\s+)/);
     const fragment = document.createDocumentFragment();
-    chars.forEach(char => {
-      const span = document.createElement('span');
-      span.className = 'blur-char';
-      span.textContent = char === ' ' ? '\u00A0' : char;
-      span.style.display = 'inline-block';
-      span.style.opacity = '0';
-      span.style.filter = 'blur(16px)';
-      span.style.transform = 'translateY(28px)';
-      span.style.willChange = 'transform, opacity, filter';
-      fragment.appendChild(span);
+
+    words.forEach(word => {
+      if (/^\s+$/.test(word)) {
+        // Normal space between words so the browser wraps lines cleanly
+        fragment.appendChild(document.createTextNode(' '));
+      } else if (word.length > 0) {
+        // Wrap each word in an inline-block container with nowrap so letters never break across lines
+        const wordWrapper = document.createElement('span');
+        wordWrapper.className = 'blur-word-wrapper';
+        wordWrapper.style.display = 'inline-block';
+        wordWrapper.style.whiteSpace = 'nowrap';
+
+        const chars = word.split('');
+        chars.forEach(char => {
+          const span = document.createElement('span');
+          span.className = 'blur-char';
+          span.textContent = char;
+          span.style.display = 'inline-block';
+          span.style.opacity = '0';
+          span.style.filter = 'blur(16px)';
+          span.style.transform = 'translateY(28px)';
+          span.style.willChange = 'transform, opacity, filter';
+          wordWrapper.appendChild(span);
+        });
+
+        fragment.appendChild(wordWrapper);
+      }
     });
+
     el.appendChild(fragment);
     return el.querySelectorAll('.blur-char');
   } else {
