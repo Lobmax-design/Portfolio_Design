@@ -32,19 +32,41 @@ if (cursor && cursorText) {
   });
 }
 
-// ── PRELOADER & BACKGROUND ASSET LOADING LOGIC (Only runs once per session) ──
+// ── PRELOADER & BACKGROUND ASSET LOADING LOGIC ──
 const preloader = document.getElementById('preloader');
 const preloaderCounter = document.getElementById('preloader-counter');
 
-if (preloader && preloaderCounter) {
-  const hasLoadedBefore = sessionStorage.getItem('portfolioLoaded');
+// If on a project page, mark that we are inside inter-page navigation
+if (!preloader) {
+  sessionStorage.setItem('navigatingBetweenPages', 'true');
+}
 
-  if (hasLoadedBefore === 'true') {
-    // Already visited in this session -> skip preloader instantly
+// Global click listener to track navigations between home and projects / between pages
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (link && (link.getAttribute('href')?.includes('projects/') || link.getAttribute('href')?.includes('index.html'))) {
+    sessionStorage.setItem('navigatingBetweenPages', 'true');
+  }
+});
+
+if (preloader && preloaderCounter) {
+  const isInterPageNav = sessionStorage.getItem('navigatingBetweenPages') === 'true' ||
+                         document.referrer.includes('/projects/') ||
+                         document.referrer.includes('invento') ||
+                         document.referrer.includes('seedex') ||
+                         document.referrer.includes('personal-works') ||
+                         ((window.performance && window.performance.getEntriesByType('navigation')[0]?.type === 'back_forward') && sessionStorage.getItem('hasVisitedHomeOnce') === 'true');
+
+  if (isInterPageNav) {
+    // Moving between home and projects -> skip preloader instantly
     preloader.style.display = 'none';
     if (preloader.parentNode) preloader.remove();
+    sessionStorage.removeItem('navigatingBetweenPages');
   } else {
-    // First time entering website in this session -> play preloader
+    // Loading at the start of the page -> play preloader
+    sessionStorage.setItem('hasVisitedHomeOnce', 'true');
+    sessionStorage.removeItem('navigatingBetweenPages');
+
     const images = Array.from(document.querySelectorAll('img'));
     const totalAssets = Math.max(images.length + 1, 1);
     let loadedAssets = 0;
@@ -66,7 +88,6 @@ if (preloader && preloaderCounter) {
 
       if (currentPercentage >= 100) {
         clearInterval(progressInterval);
-        sessionStorage.setItem('portfolioLoaded', 'true');
         setTimeout(() => {
           preloader.classList.add('preloader-hidden');
           setTimeout(() => {
