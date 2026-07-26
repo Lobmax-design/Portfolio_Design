@@ -1271,6 +1271,57 @@ button {
   .panel-bottom-nav {
     gap: 1.5rem;
   }
+
+  /* Make home page sections move closer together for a sleek, compact mobile layout */
+  .hero-title-block {
+    min-height: auto !important;
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-title {
+    gap: 1rem;
+  }
+
+  .hero-section-block {
+    margin-top: 2rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .section-heading {
+    margin-bottom: 0.8rem !important;
+  }
+
+  /* Transform project showcase cards into compact widescreen mobile banners */
+  .service-showcase-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .showcase-card {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 220px !important;
+  }
+
+  /* Compact services accordion */
+  .section-list {
+    gap: 0.75rem !important;
+  }
+
+  .section-link {
+    padding-block: 0.2rem;
+  }
+
+  /* Compact contact section */
+  .contact-card {
+    padding: 1.5rem 1rem !important;
+    margin-block: 1rem !important;
+  }
+
+  .contact-grid {
+    gap: 1.5rem !important;
+    margin-top: 1.5rem !important;
+  }
 }
 
 @media (max-width: 480px) {
