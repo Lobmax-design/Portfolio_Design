@@ -316,6 +316,7 @@ button {
 .panel {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -460,11 +461,20 @@ button {
   letter-spacing: var(--spacing-body);
   /* 43% letter spacing */
   text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
   gap: 0.5em;
   transition: opacity 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+  width: 100%;
+}
+
+.service-title-text {
+  flex: 1;
+  text-align: left;
 }
 
 .section-link:hover {
@@ -474,7 +484,10 @@ button {
 
 .section-link .arrow {
   font-size: 0.8em;
+  display: inline-block;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
+  margin-top: 0.05em;
 }
 
 .section-link:hover .arrow {
@@ -486,6 +499,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 }
 
 .service-toggle-btn {
@@ -496,10 +510,17 @@ button {
   font-family: inherit;
   cursor: pointer;
   outline: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
 }
 
 .service-toggle-btn .arrow {
   display: inline-block;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
@@ -692,7 +713,6 @@ button {
   font-size: clamp(0.85rem, 1.1vw, 1.15rem);
   letter-spacing: 0.15em;
   color: var(--color-heading);
-  text-transform: uppercase;
   margin-top: 0.2rem;
 }
 
@@ -747,6 +767,24 @@ button {
   text-align-last: center;
   user-select: none;
   margin-top: clamp(1.5rem, 4vh, 3.5rem);
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure zero empty space or blank page below THANKYOU on all screen sizes */
+#contacts-section,
+.contact-card-container,
+.contact-card,
+.contact-grid,
+.contact-thankyou,
+#panel-home .panel-home-inner,
+.panel-home-inner {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.contact-thankyou {
+  line-height: 0.73 !important;
 }
 
 @media (max-width: 768px) {
@@ -760,8 +798,8 @@ button {
   }
 
   .contact-thankyou {
-    font-size: clamp(2.4rem, 13vw, 5rem);
-    letter-spacing: 0.04em;
+    font-size: clamp(48px, 16vw, 63.3px);
+    letter-spacing: 0.02em;
     text-align: center;
     text-align-last: center;
     margin-top: 2rem;
@@ -770,7 +808,7 @@ button {
 
 @media (max-width: 480px) {
   .contact-thankyou {
-    font-size: clamp(1.8rem, 11vw, 3.2rem);
+    font-size: clamp(44px, 15.5vw, 63.3px);
     letter-spacing: 0.02em;
   }
 }
@@ -1272,61 +1310,156 @@ button {
     gap: 1.5rem;
   }
 
-  /* Make home page sections move closer together for a sleek, compact mobile layout */
+  /* Make home page sections move closer together for a sleek, compact mobile layout matching design */
   .hero-title-block {
     min-height: auto !important;
-    padding-top: 1.5rem;
-    margin-bottom: 1.5rem !important;
+    padding-top: 1rem !important;
+    margin-bottom: 1.25rem !important;
   }
 
   .hero-title {
-    gap: 1rem;
+    gap: 0.75rem !important;
   }
 
   .hero-section-block {
-    margin-top: 2rem !important;
-    padding-bottom: 1rem !important;
+    margin-top: 1.5rem !important;
+    padding-bottom: 0.5rem !important;
   }
 
   .section-heading {
-    margin-bottom: 0.8rem !important;
+    margin-bottom: 0.6rem !important;
   }
 
-  /* Transform project showcase cards into compact widescreen mobile banners */
+  /* Display project showcase cards horizontally on mobile with exact design aspect ratio (114.61 / 142.73) */
   .service-showcase-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: clamp(0.4rem, 2vw, 0.75rem) !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .showcase-card {
-    aspect-ratio: 16 / 9 !important;
-    max-height: 220px !important;
+    aspect-ratio: 114.61 / 142.73 !important;
+    max-height: none !important;
+    width: 100% !important;
   }
 
   /* Compact services accordion */
   .section-list {
-    gap: 0.75rem !important;
+    gap: 0.6rem !important;
   }
 
   .section-link {
-    padding-block: 0.2rem;
+    padding-block: 0.2rem !important;
   }
 
-  /* Compact contact section */
+  /* Compact contact section and eliminate endless scroll below THANKYOU */
+  .contact-card-container {
+    margin-top: 1.5rem !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
   .contact-card {
-    padding: 1.5rem 1rem !important;
-    margin-block: 1rem !important;
+    padding: 0.5rem 0 !important;
+    margin-block: 0 !important;
+    gap: 1.25rem !important;
   }
 
   .contact-grid {
-    gap: 1.5rem !important;
+    gap: 1.25rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .contact-thankyou {
     margin-top: 1.5rem !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .panel-home-inner {
+    padding-bottom: 0 !important;
+  }
+
+  /* ── Hero Page (Panel 1) Mobile Typography Specs ── */
+  #panel-home .hero-line.hero-port {
+    font-size: clamp(70px, 33vw, 130.83px) !important;
+  }
+
+  #panel-home .hero-line.hero-folio {
+    font-size: clamp(62px, 29vw, 116.14px) !important;
+  }
+
+  #panel-home .hero-dot {
+    width: clamp(24px, 7.5vw, 30px) !important;
+    height: clamp(24px, 7.5vw, 30px) !important;
+    margin-left: 0 !important;
+  }
+
+  #panel-home .section-heading,
+  #panel-home .contact-heading {
+    font-size: clamp(36px, 12vw, 49.98px) !important;
+  }
+
+  #panel-home .hero-subtitle,
+  #panel-home .contact-description,
+  #panel-home .contact-col-heading,
+  #panel-home .contact-subtext,
+  #panel-home .contact-email,
+  #panel-home .contact-email-link,
+  #panel-home .contact-social-link {
+    font-size: clamp(10px, 2.8vw, 11px) !important;
+  }
+
+  /* Services accordion mobile styling: disable hover and set golden ratio detail typography */
+  .section-link:hover {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  #panel-home .section-link,
+  .service-toggle-btn {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+    gap: 0.5em !important;
+    font-size: clamp(14px, 4.5vw, 16.18px) !important;
+  }
+
+  .service-title-text {
+    flex: 1 !important;
+    text-align: left !important;
+  }
+
+  #panel-home .service-description p {
+    font-size: calc(clamp(14px, 4.5vw, 16.18px) / 1.618) !important;
+  }
+
+  #panel-home .contact-thankyou {
+    font-size: clamp(48px, 16vw, 63.3px) !important;
+    letter-spacing: clamp(0.01em, 1vw, 0.03em) !important;
+    line-height: 0.73 !important;
   }
 }
 
 @media (max-width: 480px) {
   :root {
     --panel-padding: 1rem;
+  }
+
+  #contacts-section,
+  .contact-card-container,
+  .contact-card,
+  .contact-grid,
+  .contact-thankyou,
+  #panel-home .panel-home-inner,
+  .panel-home-inner {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 }
 

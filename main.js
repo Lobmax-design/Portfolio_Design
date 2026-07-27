@@ -201,6 +201,8 @@ serviceToggleItems.forEach(item => {
   const btn = item.querySelector('.service-toggle-btn');
 
   item.addEventListener('mouseenter', () => {
+    if (window.innerWidth <= 768) return; // Disable hover effect on mobile version
+
     serviceToggleItems.forEach(other => {
       if (other !== item) {
         other.classList.remove('active');
@@ -213,26 +215,27 @@ serviceToggleItems.forEach(item => {
     if (btn) btn.setAttribute('aria-expanded', 'true');
   });
 
-  if (btn) {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isActive = item.classList.contains('active');
-      if (isActive) {
-        item.classList.remove('active');
-        btn.setAttribute('aria-expanded', 'false');
-      } else {
-        serviceToggleItems.forEach(other => {
-          if (other !== item) {
-            other.classList.remove('active');
-            const otherBtn = other.querySelector('.service-toggle-btn');
-            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
-          }
-        });
-        item.classList.add('active');
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    });
-  }
+  const toggleAction = (e) => {
+    if (e.target.closest('.service-description')) return;
+    e.stopPropagation();
+    const isActive = item.classList.contains('active');
+    if (isActive) {
+      item.classList.remove('active');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    } else {
+      serviceToggleItems.forEach(other => {
+        if (other !== item) {
+          other.classList.remove('active');
+          const otherBtn = other.querySelector('.service-toggle-btn');
+          if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      item.classList.add('active');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  item.addEventListener('click', toggleAction);
 });
 
 // ── Browser Back / Forward & Mobile Back Gesture Event Listener ──
@@ -530,12 +533,13 @@ window.addEventListener('resize', () => {
 // Initial stacked & blurred setup for mockup cards (full opacity = 1, blur = 16px)
 document.querySelectorAll('.service-showcase-grid').forEach(grid => {
   const cards = grid.querySelectorAll('.showcase-card');
+  const isMobile = window.innerWidth <= 768;
   cards.forEach((card, idx) => {
     gsap.set(card, {
       opacity: 1,
       filter: 'blur(16px)',
-      xPercent: idx > 0 ? -105 * idx : 0,
-      rotation: idx > 0 ? -2.5 * idx : 0,
+      xPercent: (!isMobile && idx > 0) ? -105 * idx : 0,
+      rotation: (!isMobile && idx > 0) ? -2.5 * idx : 0,
       scale: idx === 0 ? 0.95 : 1
     });
   });
@@ -550,12 +554,13 @@ document.querySelectorAll('.panel-inner').forEach(inner => {
     if (inner.classList.contains('panel-home-inner')) {
       const heroTitleBlock = inner.querySelector('.hero-title-block');
       if (heroTitleBlock) {
-        const foldRatio = Math.min(scrollTop / (window.innerHeight * 0.65), 1);
-        const blurAmount = foldRatio * 18; // Progressive blur up to 18px
+        const isMobile = window.innerWidth <= 768;
+        const foldRatio = Math.min(scrollTop / (window.innerHeight * (isMobile ? 0.45 : 0.65)), 1);
+        const blurAmount = foldRatio * 24; // Progressive blur up to 18px
         const opacityVal = Math.max(1 - (foldRatio * 1.15), 0);
 
         gsap.to(heroTitleBlock, {
-          y: scrollTop * 0.35, // Smooth parallax float
+          y: scrollTop * (isMobile ? 0.2 : 0.35),
           opacity: opacityVal,
           filter: `blur(${blurAmount}px)`,
           duration: 0.5,
@@ -581,12 +586,15 @@ document.querySelectorAll('.panel-inner').forEach(inner => {
 
       // Calculate blur out: 16px down to 0px as progress goes to 1
       const blurVal = (1 - progress) * 16;
+      const isMobile = window.innerWidth <= 768;
 
       cards.forEach((card, idx) => {
-        if (idx === 0) {
+        if (idx === 0 || isMobile) {
           gsap.to(card, {
             filter: `blur(${blurVal}px)`,
             scale: 0.95 + (progress * 0.05),
+            xPercent: 0,
+            rotation: 0,
             duration: 0.5,
             ease: 'power2.out',
             overwrite: 'auto'
