@@ -317,10 +317,12 @@ button {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
+  height: 100svh;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
   background-color: var(--color-bg);
+  overscroll-behavior: none;
 }
 
 .panel-inner {
@@ -333,6 +335,7 @@ button {
   /* Reduced top padding */
   scrollbar-width: none;
   /* Hide scrollbar for Firefox */
+  overscroll-behavior: none;
 }
 
 .panel-inner::-webkit-scrollbar {
@@ -766,9 +769,10 @@ button {
   text-align: center;
   text-align-last: center;
   user-select: none;
-  margin-top: clamp(1.5rem, 4vh, 3.5rem);
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
+  margin-top: clamp(1.5rem, 3.5vh, 3rem);
+  margin-bottom: 50px;
+  /* padding-bottom: 0 !important; */
+  overflow: hidden !important;
 }
 
 /* Ensure zero empty space or blank page below THANKYOU on all screen sizes */
@@ -776,7 +780,7 @@ button {
 .contact-card-container,
 .contact-card,
 .contact-grid,
-.contact-thankyou,
+/* .contact-thankyou, */
 #panel-home .panel-home-inner,
 .panel-home-inner {
   margin-bottom: 0 !important;
@@ -785,6 +789,7 @@ button {
 
 .contact-thankyou {
   line-height: 0.73 !important;
+  overflow: hidden !important;
 }
 
 @media (max-width: 768px) {
@@ -803,6 +808,9 @@ button {
     text-align: center;
     text-align-last: center;
     margin-top: 2rem;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
   }
 }
 
@@ -810,6 +818,9 @@ button {
   .contact-thankyou {
     font-size: clamp(44px, 15.5vw, 63.3px);
     letter-spacing: 0.02em;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
   }
 }
 
@@ -1302,6 +1313,27 @@ button {
    ══════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .panel {
+    height: 100vh;
+    height: 100dvh;
+    height: 100svh !important;
+    overscroll-behavior: none;
+  }
+
+  .panel-inner {
+    height: 100%;
+    max-height: 100svh !important;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+
   .gallery-masonry {
     grid-template-columns: 1fr;
   }
@@ -1354,6 +1386,7 @@ button {
   }
 
   /* Compact contact section and eliminate endless scroll below THANKYOU */
+  #contacts-section,
   .contact-card-container {
     margin-top: 1.5rem !important;
     padding-bottom: 0 !important;
@@ -1361,7 +1394,9 @@ button {
   }
 
   .contact-card {
-    padding: 0.5rem 0 !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0 !important;
+    padding-inline: 0 !important;
     margin-block: 0 !important;
     gap: 1.25rem !important;
   }
@@ -1376,9 +1411,17 @@ button {
     margin-top: 1.5rem !important;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    overflow: hidden !important;
   }
 
+  #contacts-section,
+  .contact-card-container,
+  .contact-card,
+  .contact-grid,
+  .contact-thankyou,
+  #panel-home .panel-home-inner,
   .panel-home-inner {
+    margin-bottom: 0 !important;
     padding-bottom: 0 !important;
   }
 
@@ -1443,6 +1486,9 @@ button {
     font-size: clamp(48px, 16vw, 63.3px) !important;
     letter-spacing: clamp(0.01em, 1vw, 0.03em) !important;
     line-height: 0.73 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
   }
 }
 
